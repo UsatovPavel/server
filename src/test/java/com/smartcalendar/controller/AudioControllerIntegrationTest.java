@@ -26,7 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "JWT_SECRET=test_jwt_secret",
         "chatgpt.api.url=http://dummy-url",
         "chatgpt.api.key=dummy-key",
-        "spring.security.enabled=false"
+        "spring.security.enabled=false",
+        "spring.sql.init.mode=never"
 })
 @ActiveProfiles("h2")
 @AutoConfigureMockMvc
