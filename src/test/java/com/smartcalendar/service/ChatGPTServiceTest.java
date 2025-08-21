@@ -1,11 +1,11 @@
 package com.smartcalendar.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -25,13 +25,11 @@ class ChatGPTServiceTest {
     @Test
     void testConvertToEntities() {
         Map<String, List<?>> data = Map.of(
-                "events", List.of(Map.of("title", "Event1")),
-                "tasks", List.of(Map.of("title", "Task1", "completed", false))
+                "events", List.of(Map.of("title", "Event1"))
         );
         var entities = chatGPTService.convertToEntities(data);
-        assertEquals(2, entities.size());
+        assertEquals(1, entities.size());
         assertTrue(entities.stream().anyMatch(e -> e.getClass().getSimpleName().equals("Event")));
-        assertTrue(entities.stream().anyMatch(e -> e.getClass().getSimpleName().equals("Task")));
     }
 
     @Test
@@ -43,10 +41,10 @@ class ChatGPTServiceTest {
     }
 
     @Test
-    void testGenerateEventsAndTasks_ValidJson() {
+    void testGenerateEvents_ValidJson() {
         ChatGPTService spyService = spy(chatGPTService);
         doReturn("{\"events\":[],\"tasks\":[]}").when(spyService).askChatGPT(anyString(), anyString());
-        Map<String, List<?>> result = spyService.generateEventsAndTasks("test");
+        Map<String, List<?>> result = spyService.generateEvents("test");
         assertTrue(result.containsKey("events"));
         assertTrue(result.containsKey("tasks"));
     }
