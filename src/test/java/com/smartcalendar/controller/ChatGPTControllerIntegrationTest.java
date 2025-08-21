@@ -59,7 +59,7 @@ class ChatGPTControllerIntegrationTest {
     @Test
     @WithMockUser
     void testGenerateEventsAndTasks() throws Exception {
-        Mockito.when(chatGPTService.generateEventsAndTasks(any())).thenReturn(
+        Mockito.when(chatGPTService.generateEvents(any())).thenReturn(
                 Map.of("events", List.of(), "tasks", List.of())
         );
         mockMvc.perform(post("/api/chatgpt/generate")
