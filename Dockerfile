@@ -1,4 +1,7 @@
 FROM eclipse-temurin:21-jdk-alpine
+
+RUN apk add --no-cache ffmpeg curl
+
 WORKDIR /app
 
 COPY build/libs/*.jar app.jar
