@@ -16,6 +16,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Event {
+    static public class Interval {
+        public final LocalDateTime start;
+        public final LocalDateTime end;
+
+        public Interval(LocalDateTime start, LocalDateTime end) {
+            this.start = start;
+            this.end = end;
+        }
+    }
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -30,7 +39,7 @@ public class Event {
     @Column(name = "end_time")
     private LocalDateTime end;
 
-    private String location;
+    private String location = "";
 
     @Enumerated(EnumType.STRING)
     private EventType type;
@@ -57,4 +66,19 @@ public class Event {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> participants = new ArrayList<>();
+    public Event(Event other) {
+        this.id = other.id != null ? other.id : UUID.randomUUID();
+        this.title = other.title;
+        this.description = other.description;
+        this.start = other.start;
+        this.end = other.end;
+        this.location = other.location != null ? other.location : "";
+        this.type = other.type != null ? other.type : EventType.COMMON;
+        this.organizer = other.organizer;
+        this.creationTime = other.creationTime != null ? other.creationTime : LocalDateTime.now();
+        this.completed = other.completed;
+        this.isShared = other.isShared;
+        this.invitees = other.invitees != null ? new ArrayList<>(other.invitees) : new ArrayList<>();
+        this.participants = other.participants != null ? new ArrayList<>(other.participants) : new ArrayList<>();
+    }
 }
