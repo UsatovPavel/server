@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -23,9 +24,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "JWT_SECRET=test_jwt_secret",
         "chatgpt.api.url=http://dummy-url",
         "chatgpt.api.key=dummy-key",
-        "spring.security.enabled=false",
-        "spring.sql.init.mode=never"
+        "spring.security.enabled=false"
 })
+@ActiveProfiles("h2")
 @AutoConfigureMockMvc
 class ChatGPTControllerIntegrationTest {
 
