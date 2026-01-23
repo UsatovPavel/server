@@ -1,7 +1,6 @@
 package com.smartcalendar.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +12,6 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "tasks")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
@@ -21,20 +19,19 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column
     private String title;
-    @Column
-    private String description;
-    @Column
-    private boolean isCompleted;
 
-    private LocalDateTime dueDateTime;
-    private Boolean allDay = false;
+    private String description;
+
+    private boolean completed;
+
+    private LocalDateTime dueDateTime; // дедлайн с точностью до времени
+    private Boolean allDay = false;    // если true — задача только на день (игнорировать время)
 
     private LocalDateTime creationTime = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference(value = "user_tasks")
+    @JsonBackReference
     private User user;
 }

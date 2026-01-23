@@ -41,12 +41,13 @@ public class ChatGPTController {
                 return ResponseEntity.badRequest().body(response);
             }
 
-            List<?> events = response.get("events") instanceof List ? (List<?>) response.get("events") : List.of();
-            List<?> tasks = response.get("tasks") instanceof List ? (List<?>) response.get("tasks") : List.of();
+            if (!(response.get("events") instanceof List) || !(response.get("tasks") instanceof List)) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Invalid response format from ChatGPT"));
+            }
 
             Map<String, List<?>> validResponse = Map.of(
-                    "events", events,
-                    "tasks", tasks
+                    "events", (List<?>) response.get("events"),
+                    "tasks", (List<?>) response.get("tasks")
             );
 
             List<Object> entities = chatGPTService.convertToEntities(validResponse);

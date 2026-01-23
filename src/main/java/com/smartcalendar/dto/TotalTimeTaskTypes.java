@@ -1,13 +1,11 @@
 package com.smartcalendar.dto;
 
-import lombok.Data;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.Data;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class TotalTimeTaskTypesDto {
+public class TotalTimeTaskTypes {
     private long common;
     private long work;
     private long study;
