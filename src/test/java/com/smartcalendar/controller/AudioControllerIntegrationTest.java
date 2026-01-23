@@ -1,8 +1,10 @@
 package com.smartcalendar.controller;
 
-import com.smartcalendar.service.AudioProcessingService;
-import com.smartcalendar.service.ChatGPTService;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,14 +13,14 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
-import java.util.Map;
-
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.smartcalendar.service.AudioProcessingService;
+import com.smartcalendar.service.ChatGPTService;
 
 @SpringBootTest(properties = {
         "JWT_SECRET=test_jwt_secret",
@@ -27,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "spring.security.enabled=false",
         "spring.sql.init.mode=never"
 })
+@ActiveProfiles("h2")
 @AutoConfigureMockMvc
 class AudioControllerIntegrationTest {
 

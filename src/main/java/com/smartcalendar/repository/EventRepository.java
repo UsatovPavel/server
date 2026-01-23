@@ -19,4 +19,9 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
     List<Event> findByUserIdAndDate(Long userId,
                                                  LocalDateTime startOfDay,
                                                  LocalDateTime endOfDay);
+    @Query("SELECT e FROM Event e WHERE LOWER(e.location) = LOWER(:location) ORDER BY e.end ASC")
+    List<Event> findByLocationIgnoreCase(String location);
+    @Query("SELECT e FROM Event e WHERE LOWER(e.location) = LOWER(:location) AND :userId IS NOT NULL " +
+            "AND (e NOT IN (SELECT v FROM User u JOIN u.events v WHERE u.id = :userId))")
+    List<Event> findByLocationForUser(String location, Long userId);
 }

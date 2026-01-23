@@ -57,7 +57,7 @@ public class AudioProcessingService {
     }
     public String transcribeAudio(MultipartFile file) {
         try {
-            Path uploadsDir = Paths.get(System.getProperty("user.dir"), "uploads").toAbsolutePath();
+            Path uploadsDir = Paths.get(System.getProperty("user.dir"), "tmp", "uploads").toAbsolutePath();
             Files.createDirectories(uploadsDir);
 
             Path path = uploadsDir.resolve(Objects.requireNonNull(file.getOriginalFilename()));

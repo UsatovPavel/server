@@ -18,10 +18,10 @@ import java.util.function.Predicate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled("call real OpenAI API")
+@Tag("openAI-api")
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = {SmartCalendarApplication.class, TestSecurityConfig.class}
+        classes = {SmartCalendarApplication.class, TestSecurityConfig.class} // подмешиваем TestSecurityConfig
 )
 @ActiveProfiles("test-real")
 public class AudioControllerRestTemplateTest {

@@ -60,5 +60,13 @@ dependencies {
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags 'openAI-api'
+    }
+}
+
+tasks.register('testOpenAI', Test) {
+    useJUnitPlatform {
+        includeTags 'openAI-api'
+    }
 }

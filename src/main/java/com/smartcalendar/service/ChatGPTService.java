@@ -197,7 +197,6 @@ public class ChatGPTService {
 
     public Map<String, List<?>> generateEvents(String userQuery) {
         logger.info("Generating events for query: {}", userQuery);
-
         String prompt = "Based on the user's query: \"" + userQuery + "\", generate a list of events . " +
                 "If the user mentions a note, description, or additional information related to an event, include it in the 'description' field of the corresponding event, " +
                 "unless it is clearly a separate task. " +

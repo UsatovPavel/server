@@ -4,14 +4,6 @@ import com.smartcalendar.model.Event;
 import com.smartcalendar.model.FormatterUtils;
 import com.smartcalendar.model.User;
 import com.smartcalendar.repository.UserRepository;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,15 +12,25 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("openAI-api")
 @Nested
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test-real")
-@Disabled("call real OpenAI API")
 class ServiceRealApiTest {
 
     @Autowired
@@ -39,12 +41,14 @@ class ServiceRealApiTest {
 
     @Autowired
     private FormatterUtils formatterUtils;
+
     @Autowired
     private ChatGPTService chatGPTService;
+
     private final User testUser = new User();
-    private final LocalDate todayDate = LocalDate.now();
     private final Event eventToday = new Event();
-    private final LocalDate date = LocalDate.now();
+    private final LocalDate todayDate = LocalDate.now();
+
     @BeforeEach
     void setup() {
         testUser.setId(1L);
@@ -54,13 +58,13 @@ class ServiceRealApiTest {
         userRepository.save(testUser);
         eventToday.setTitle("Morning Meeting");
         eventToday.setId(UUID.randomUUID());
-        eventToday.setStart(date.atTime(0, 0));
-        eventToday.setEnd(date.atTime(23, 0));
+        eventToday.setStart(todayDate.atTime(0, 0));
+        eventToday.setEnd(todayDate.atTime(23, 0));
         eventToday.setOrganizer(testUser);
-
     }
+
     MockMultipartFile convertFileToMultipart(String filename) throws IOException {
-        File audio = new File("src/test/resources/"+filename);
+        File audio = new File("src/test/resources/" + filename);
         byte[] content = Files.readAllBytes(audio.toPath());
 
         return new MockMultipartFile(
@@ -96,6 +100,7 @@ class ServiceRealApiTest {
         assertEquals("I need to study", firstEvent.get("description"));
         System.out.println("Processed events: " + result);
     }
+
     @Test
     @Disabled("call real OpenAI API")
     void testFindDates_RealRequest() {
@@ -110,14 +115,12 @@ class ServiceRealApiTest {
     @Test
     @Disabled("call real OpenAI API")
     void testGenerateEventsWithTaskInfo_RealRequest() {
-        LocalDate date = LocalDate.now();
         List<Event.Interval> slots = List.of(
-                new Event.Interval(date.atTime(20, 0), date.atTime(23, 59))
+                new Event.Interval(todayDate.atTime(20, 0), todayDate.atTime(23, 59))
         );
-        String intervalsInfo = formatterUtils.convertDayIntervalsToJson(date, slots);
+        String intervalsInfo = formatterUtils.convertDayIntervalsToJson(todayDate, slots);
 
         String userQuery = "Schedule study session today";
-        List<Event> userEvents = List.of(eventToday);
         Map<String, List<?>> result = chatGPTService.generateEventsWithTaskInfo(userQuery, intervalsInfo);
 
         assertNotNull(result);
@@ -135,6 +138,7 @@ class ServiceRealApiTest {
         assertTrue(startDateTime.getHour() >= 20, "Event should start after 20:00");
         System.out.println("Generated events: " + events);
     }
+
     @Test
     @Disabled("call real OpenAI API")
     void testGenerateSuggestions_RealRequest() {
