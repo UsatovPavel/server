@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -76,7 +75,6 @@ class ServiceRealApiTest {
     }
 
     @Test
-    @Disabled("call real OpenAI API")
     void testRealAudioTranscription() {
         MockMultipartFile multipartFile = assertDoesNotThrow(() -> convertFileToMultipart("DescriptionIneedStudy.mp3"));
 
@@ -86,7 +84,6 @@ class ServiceRealApiTest {
     }
 
     @Test
-    @Disabled("call real OpenAI API")
     void testProcessTranscript_RealRequest() {
         String transcript = "Create event type study with exactly this description: I need to study";
 
@@ -102,7 +99,6 @@ class ServiceRealApiTest {
     }
 
     @Test
-    @Disabled("call real OpenAI API")
     void testFindDates_RealRequest() {
         String userQuery = "I want to create tasks on 22nd and 23rd August 2025";
         List<?> dates = chatGPTService.findDates(userQuery);
@@ -113,7 +109,6 @@ class ServiceRealApiTest {
     }
 
     @Test
-    @Disabled("call real OpenAI API")
     void testGenerateEventsWithTaskInfo_RealRequest() {
         List<Event.Interval> slots = List.of(
                 new Event.Interval(todayDate.atTime(20, 0), todayDate.atTime(23, 59))
@@ -140,7 +135,6 @@ class ServiceRealApiTest {
     }
 
     @Test
-    @Disabled("call real OpenAI API")
     void testGenerateSuggestions_RealRequest() {
         Long userId = testUser.getId();
         String query = "Schedule study session today";
